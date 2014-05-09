@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transac</title>
+</head>
+<body>
+    {% for file in files_list %}
+    <p>{{ file.name }}</p>
+    {% endfor %}
+    <p>------------------------------------------</p>
+    {% for v in view_list %}
+    <p>{{ v.trans }}
+    {% endfor %}
+</body>
+</html>
