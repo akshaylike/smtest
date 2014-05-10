@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<ul class="nav nav-pills">
+  <li><a href="/transac/">Home</a></li>
+  <li class="active"><a href="/transac/upload/">Upload Document</a></li>
+  <li><a href="/transac/sharedoc/">Share Document</a></li>
+  <li><a href="/transac/viewshared/">Shared with me</a></li>
+  <li><a href="/transac/logout/">Logout</a></li>
+</ul>
+<br>
+<div class="jumbotron">
+  <form id="upload_form" class="form-horizontal" method="post" action="/transac/upload/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+      <legend>Upload</legend>
+      {% for field in upload_form %}
+      <div class="form-group">
+        <label class="col-lg-2 control-label">{{ field.label }}</label>
+        <div class="col-lg-10">{{ field }}</div>
+      </div>
+      {% endfor %}
+      <div class="form-group">
+        <div class="col-lg-2 col-lg-offset-2">
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+{% endblock %}

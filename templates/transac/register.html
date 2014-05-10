@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+{% if registered %}
+  <span class="label label-danger">Thank you for registering</span>
+  <a href="/transac/">Return to the homepage</a>
+{% else %}
+  <form id="user_form" class="form-horizontal" method=post action="/transac/register/">
+  {% csrf_token %}
+  <fieldset>
+  <legend>Register</legend>
+  {% for field in user_form %}
+    <div class="form-group">
+      <label for="id_username" class="col-lg-2 control-label">{{ field.label }}</label>
+      <div class="col-lg-10">{{ field }}</div>
+    </div>
+  {% endfor %}
+    <div class="form-group">
+      <div class="col-lg-2 col-lg-offset-2">
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </div>
+    </div>
+  </fieldset>
+  </form>
+{% endif %}
+</div>
+{% endblock %}

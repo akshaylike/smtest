@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Transac</title>
-</head>
-<body>
-    {% for file in files_list %}
-    <p>{{ file.name }}</p>
-    {% endfor %}
-    <p>------------------------------------------</p>
-    {% for v in view_list %}
-    <p>{{ v.trans }}
-    {% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul class="nav nav-pills">
+  <li class="active"><a href="/transac/">Home</a></li>
+  <li><a href="/transac/upload/">Upload Document</a></li>
+  <li><a href="/transac/sharedoc/">Share Document</a></li>
+  <li><a href="/transac/viewshared/">Shared with me</a></li>
+  <li><a href="/transac/logout/">Logout</a></li>
+</ul>
+<br>
+{% else %}
+<a href="/transac/login/"><button type="button" class="btn btn-primary">Login</button></a>
+<a href="/transac/register"><button type="button" class="btn btn-success">Register</button></a>
+{% endif %}
+{% endblock %}
