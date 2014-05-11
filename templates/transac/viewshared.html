@@ -5,28 +5,24 @@
   <li><a href="/transac/upload/">Upload Document</a></li>
   <li><a href="/transac/sharedoc/">Share Document</a></li>
   <li class="active"><a href="/transac/viewshared/">Shared with me</a></li>
+  <li><a href="/transac/manageshared/">Manage shared documents</a></li>
   <li><a href="/transac/logout/">Logout</a></li>
 </ul>
 <br>
-<div class="jumbotron">
-{% for d in docs %}
-    <a href="#" data-toggle="modal" data-target="#myModal">{{ d.trans.name }}</a>
-{% endfor %}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <p>Documents shared with me</p>
+  </div>
+  <ul class="list-group">
+  {% for d in docs %}
+    <li class="list-group-item"><p>{{ d.trans.name }}</p>
+      <iframe src="http://docs.google.com/viewer?url=http://akshaylike.pythonanywhere.com/smtest/media/{{ d.trans.pdfdoc }}&embedded=true" width=100% height=500px style="border: none;"></iframe>
+    </li>
+  {% endfor %}
+  </ul>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" overflow="visible">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <iframe src="http://docs.google.com/viewer?url=https://dl.dropboxusercontent.com/u/99346076/67-412-1-PB.pdf&embedded=true" width=100% height=500px style="border: none;"></iframe>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <script language="javascript" type="text/javascript">
 $('#myModal').modal({

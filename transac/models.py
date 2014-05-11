@@ -12,5 +12,6 @@ class Transaction(models.Model):
 class TransactionView(models.Model):
     trans = models.ForeignKey(Transaction)
     viewer = models.ForeignKey(User)
+    shared_by = models.IntegerField(default=0)
     def __str__(self):
         return self.trans.name

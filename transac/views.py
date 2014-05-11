@@ -1,11 +1,13 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from transac.forms import UserForm, UploadForm, ShareForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import DeleteView
 from transac.models import Transaction, TransactionView
+
 
 def user_login(request):
     context = RequestContext(request)
@@ -56,7 +58,9 @@ def register(request):
 
 def index(request):
     context = RequestContext(request)
-    return render_to_response('transac/index.html', {}, context)
+    curuser = request.user
+    uploaded_docs = Transaction.objects.filter(uploader=curuser)
+    return render_to_response('transac/index.html', {'uploaded_docs': uploaded_docs}, context)
 
 @login_required
 def upload(request):
@@ -65,9 +69,14 @@ def upload(request):
     if request.method == 'POST':
         upload_form = UploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
-            t = upload_form.save(commit=False)
-            t.uploader = curuser
-            t.save()
+            dat = upload_form.cleaned_data
+            contype = str(dat['pdfdoc'])[-3:]
+            if contype == 'pdf':
+              t = upload_form.save(commit=False)
+              t.uploader = curuser
+              t.save()
+            else:
+              return HttpResponse("Only PDF documents supported!")
             return index(request)
         else:
             print upload_form.errors
@@ -92,9 +101,9 @@ def sharedoc(request):
         share_form = ShareForm(curuser, request.POST)
         if share_form.is_valid():
             dat = share_form.cleaned_data
-            tv = TransactionView(trans=dat['documents'], viewer=dat['users'])
+            tv = TransactionView(trans=dat['documents'], shared_by=curuser, viewer=dat['users'])
             tv.save()
-            return index(request)
+            return manageshared(request)
         else:
             print share_form.errors
     else:
@@ -102,11 +111,21 @@ def sharedoc(request):
     return render_to_response('transac/sharedoc.html', {'share_form': share_form}, context)
 
 
+@login_required
+def manageshared(request):
+    context = RequestContext(request)
+    curuser = request.user.id
+    docs = TransactionView.objects.filter(shared_by=curuser)
+    return render_to_response('transac/manageshared.html', {'docs': docs}, context)
 
 
-
-
-
+@login_required
+def transactionview_delete(request, pk, template_name='transac/transactionview_confirm_delete.html'):
+    transacview = get_object_or_404(TransactionView, pk=pk)
+    if request.method=='POST':
+        transacview.delete()
+        return redirect('manageshared')
+    return render(request, template_name, {'object':transacview})
 
 
 

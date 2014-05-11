@@ -6,9 +6,20 @@
   <li><a href="/transac/upload/">Upload Document</a></li>
   <li><a href="/transac/sharedoc/">Share Document</a></li>
   <li><a href="/transac/viewshared/">Shared with me</a></li>
+  <li><a href="/transac/manageshared/">Manage shared documents</a></li>
   <li><a href="/transac/logout/">Logout</a></li>
 </ul>
 <br>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <p>Uploaded Documents</p>
+  </div>
+  <ul class="list-group">
+    {% for doc in uploaded_docs %}
+    <li class="list-group-item">{{ doc.name }}</li>
+    {% endfor %}
+  </ul>
+</div>
 {% else %}
 <a href="/transac/login/"><button type="button" class="btn btn-primary">Login</button></a>
 <a href="/transac/register"><button type="button" class="btn btn-success">Register</button></a>

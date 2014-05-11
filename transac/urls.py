@@ -9,4 +9,6 @@ urlpatterns = patterns('',
         url(r'^upload/$', views.upload, name='upload'),
         url(r'^viewshared/$', views.viewshared, name='viewshared'),
         url(r'^sharedoc/$', views.sharedoc, name='sharedoc'),
+        url(r'^manageshared/$', views.manageshared, name='manageshared'),
+        url(r'^delete/(?P<pk>\d+)$', views.transactionview_delete, name='transactionview_delete'),
 )
